@@ -1,7 +1,10 @@
 package pl.info.czerniak.library.controller;
 
 import pl.info.czerniak.library.dao.BookDAO;
+import pl.info.czerniak.library.dao.DAOFactory;
+import pl.info.czerniak.library.dao.PostgresqlDaoFactory;
 import pl.info.czerniak.library.model.Book;
+import pl.info.czerniak.library.util.DbOperationException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet("/BookServlet")
 public class BookServlet extends HttpServlet {
@@ -23,7 +25,8 @@ public class BookServlet extends HttpServlet {
         String description = req.getParameter("description");
         String option = req.getParameter("option");
         try{
-            BookDAO dao = new BookDAO();
+            DAOFactory factory = PostgresqlDaoFactory.getDaoFactory(DAOFactory.POSTGRESQL_DAO);
+            BookDAO dao = factory.getBookDAO();
             Book book = null;
             String operation = null;
             if("search".equals(option)){
@@ -45,7 +48,7 @@ public class BookServlet extends HttpServlet {
             req.setAttribute("option",operation);
             req.setAttribute("book",book);
             req.getRequestDispatcher("result.jsp").forward(req,resp);
-        } catch (SQLException e) {
+        } catch (DbOperationException e) {
             e.printStackTrace();
             req.getRequestDispatcher("error.jsp").forward(req,resp);
         }
