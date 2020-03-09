@@ -7,12 +7,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import pl.info.czerniak.library.model.User;
 import pl.info.czerniak.library.util.ConnectionProvider;
-import pl.info.czerniak.library.util.DbOperationException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 public class PostgresqlUserDAO implements UserDAO{
