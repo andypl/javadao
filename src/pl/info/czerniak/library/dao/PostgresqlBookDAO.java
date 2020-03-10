@@ -43,7 +43,7 @@ public class PostgresqlBookDAO implements BookDAO{
     }
 
     public void delete(Book book){
-        SqlParameterSource parameterSource = new MapSqlParameterSource("isbn", book.getIsbn());
+        BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(book);
         template.update(DELETE,parameterSource);
     }
 
