@@ -14,7 +14,7 @@ public class PostgresqlUserDAO implements UserDAO{
     private final static String CREATE = "INSERT INTO users(pesel, firstName, lastName) VALUES(:pesel, :firstName, :lastName);";
     private final static String READ = "SELECT pesel, firstName, lastName FROM users WHERE pesel = ?;";
     private final static String UPDATE = "UPDATE users SET pesel= :pesel, lastName= :lastName, firstName= :firstName WHERE pesel = :pesel;";
-    private final static String DELETE = "DELETE FROM users WHERE pesel=?;";
+    private final static String DELETE = "DELETE FROM users WHERE pesel= :pesel;";
 
     private NamedParameterJdbcTemplate template;
 
@@ -47,7 +47,7 @@ public class PostgresqlUserDAO implements UserDAO{
 
     @Override
     public void delete(User user) {
-        BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
+        SqlParameterSource parameterSource = new MapSqlParameterSource("pesel",user.getPesel());
         template.update(DELETE, parameterSource);
     }
 }
